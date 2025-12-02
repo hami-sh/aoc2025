@@ -6,15 +6,19 @@ def split_into_parts(s, num_parts):
     part_len = length // num_parts
     extra = length % num_parts
     start = 0
+    print(f"for s {s} ---- part_len {part_len}, extra {extra}")
     for j in range(num_parts):
         cur_len = part_len + (1 if j < extra else 0)
-        parts.append(s[start:start+cur_len])
+        a = s[start:start+cur_len]
+        print(f"cur_len {cur_len}, a {a}")
+        parts.append(a)
+        
         start += cur_len
     return parts
 
 
 def sol():
-    f = open("./day02/input.txt")
+    f = open("./day02/dummy.txt")
     ranges = []
     for line in f.readlines():
         l = list(filter(lambda x: x != "", line.strip().split(',')))
@@ -33,19 +37,21 @@ def sol():
 
 
         for current_num in range(start, end):
-            print(f"testing {current_num}")
+            # print(f"testing {current_num}")
             current_num_done = False
             s = str(current_num)
             length = len(s)
-            half_idx = length // 2
-            first = s[:half_idx]
-            second = s[half_idx:]
-            parts = [first, second]
-            if all(p == parts[0] for p in parts):
-                print(f"All parts for {s} are equal: {parts}")
-                res += int(s)
-                print(f"res {res}")
-                current_num_done = True
+            num_parts = 2
+            while num_parts <= length:
+                if current_num_done:
+                    break
+                parts = split_into_parts(s, num_parts)
+                if all(p == parts[0] for p in parts):
+                    print(f"All parts for {s} are equal: {parts}")
+                    res += int(s)
+                    # print(f"res {res}")
+                    current_num_done = True
+                num_parts += 1
 
     return res
     
